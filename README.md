@@ -30,7 +30,7 @@ MicroservicesArchitecture
 ![image](https://github.com/user-attachments/assets/e4a03ea2-f338-400f-81ad-aab85010bd55)
 
 
-#Configuração do Projeto
+## Configuração do Projeto
 
 1. Criar o Projeto
 Crie projeto console em .NET 8:
@@ -54,13 +54,13 @@ Execute o projeto para ver o controle de fluxo de caixa em ação:
 
 dotnet run
 
-#Testes End-to-End (E2E)
+## Testes End-to-End (E2E)
 
-Para garantir que o sistema funcione corretamente de ponta a ponta, incluímos testes E2E usando Selenium.
+Para garantir que o sistema funcione corretamente de ponta a ponta, incluí testes E2E usando Selenium.
 
-#Configuração dos Testes E2E
+Configuração dos Testes E2E
 
-1. Adicionar dependências: Certifique-se de que você tem o pacote Selenium WebDriver instalado:
+1. Adicionar dependências: Certifique-se de ter o pacote Selenium WebDriver instalado:
 
 dotnet add package Selenium.WebDriver
 
@@ -77,7 +77,7 @@ dotnet test
 - **Blocos de Código**: Blocos de código para mostrar exemplos de código e comandos de terminal.
 - **Comandos de Terminal**: Os comandos de terminal usando blocos de código com `sh` para indicar que são comandos de shell.
 
-#Conclusão
+## Conclusão
 
 Este projeto implementa um sistema de controle de fluxo de caixa diário usando uma arquitetura de microservices. Ele segue os princípios SOLID e usa padrões de design, como o padrão de repositório e o padrão de serviço. 
 
