@@ -55,7 +55,7 @@ dotnet run
 
 ## Testes End-to-End (E2E)
 
-Para garantir que o sistema funcione corretamente de ponta a ponta, incluí testes E2E usando Selenium.
+Para garantir que o sistema funcione corretamente de ponta a ponta, inclui testes E2E usando Selenium.
 
 Configuração dos Testes E2E
 
