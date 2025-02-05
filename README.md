@@ -32,8 +32,7 @@ MicroservicesArchitecture
 
 ## Configuração do Projeto
 
-1. Criar o Projeto
-Crie projeto console em .NET 8:
+1. Criar o Projeto em .NET 8:
 
 2. Estrutura do Código
 Modelo de arquivos
