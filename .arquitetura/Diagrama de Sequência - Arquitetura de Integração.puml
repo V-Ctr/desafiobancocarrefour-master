@@ -1,0 +1,56 @@
+@startuml SequenceDiagram
+
+actor User
+participant "API Gateway" as APIGW
+participant "Authentication Service" as AuthSvc
+participant "User Service" as UserSvc
+participant "Product Service" as ProdSvc
+participant "Order Service" as OrderSvc
+participant "Payment Service" as PaySvc
+participant "Message Broker" as MB
+participant "Cache (Redis)" as Cache
+participant "Database (SQL/NoSQL)" as DB
+
+User -> APIGW: POST /login (HTTP/HTTPS, JSON)
+APIGW -> AuthSvc: Authenticate (HTTP/HTTPS, JSON)
+AuthSvc -> Cache: Check User Cache (Redis Protocol)
+alt Cache Hit
+    Cache --> AuthSvc: Return Cached User Data
+else Cache Miss
+    AuthSvc -> UserSvc: Validate User (gRPC, Protobuf)
+    UserSvc -> DB: SELECT * FROM users WHERE username = ? (SQL/NoSQL)
+    DB --> UserSvc: Return User Data
+    UserSvc --> AuthSvc: Return Validation Result
+    AuthSvc -> Cache: Update User Cache (Redis Protocol)
+end
+AuthSvc -> AuthSvc: Generate Token
+AuthSvc --> APIGW: Return Token (HTTP/HTTPS, JSON)
+APIGW --> User: Return Token (HTTP/HTTPS, JSON)
+
+User -> APIGW: GET /products (HTTP/HTTPS, JSON)
+APIGW -> ProdSvc: Get Products (HTTP/HTTPS, JSON)
+ProdSvc -> Cache: Check Product Cache (Redis Protocol)
+alt Cache Hit
+    Cache --> ProdSvc: Return Cached Product Data
+else Cache Miss
+    ProdSvc -> DB: SELECT * FROM products (SQL/NoSQL)
+    DB --> ProdSvc: Return Product Data
+    ProdSvc -> Cache: Update Product Cache (Redis Protocol)
+end
+ProdSvc --> APIGW: Return Products (HTTP/HTTPS, JSON)
+APIGW --> User: Return Products (HTTP/HTTPS, JSON)
+
+User -> APIGW: POST /order (HTTP/HTTPS, JSON)
+APIGW -> OrderSvc: Create Order (HTTP/HTTPS, JSON)
+OrderSvc -> MB: Publish Order Created Event (AMQP, Protobuf)
+OrderSvc -> DB: INSERT INTO orders (SQL/NoSQL)
+DB --> OrderSvc: Return Order
+OrderSvc --> APIGW: Return Order (HTTP/HTTPS, JSON)
+APIGW --> User: Return Order (HTTP/HTTPS, JSON)
+
+MB -> PaySvc: Process Payment (AMQP, Protobuf)
+PaySvc -> DB: INSERT INTO payments (SQL/NoSQL)
+DB --> PaySvc: Return Payment
+PaySvc -> MB: Publish Payment Processed Event (AMQP, Protobuf)
+
+@enduml

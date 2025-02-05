@@ -1,0 +1,44 @@
+@startuml DiagramaDeFluxoDeDados
+actor User
+participant "API Gateway" as APIGW
+participant "Authentication Service" as Auth
+participant "User Service" as UserSvc
+participant "Product Service" as ProdSvc
+participant "Order Service" as OrderSvc
+participant "Payment Service" as PaySvc
+participant "Message Broker" as MB
+participant "Cache (Redis)" as Cache
+participant "Database (SQL/NoSQL)" as DB
+
+User -> APIGW: Request
+APIGW -> Auth: Authenticate
+Auth -> UserSvc: Query User
+UserSvc -> DB: SELECT * FROM users WHERE id = ?
+DB --> UserSvc: Return User
+UserSvc --> Auth: Return User
+Auth --> APIGW: Return Token
+APIGW --> User: Return Token
+
+User -> APIGW: Request Product
+APIGW -> ProdSvc: Get Product
+ProdSvc -> Cache: Check Cache
+Cache --> ProdSvc: Cache Miss
+ProdSvc -> DB: SELECT * FROM products WHERE id = ?
+DB --> ProdSvc: Return Product
+ProdSvc --> Cache: Update Cache
+ProdSvc --> APIGW: Return Product
+APIGW --> User: Return Product
+
+User -> APIGW: Place Order
+APIGW -> OrderSvc: Create Order
+OrderSvc -> MB: Publish Order Created Event
+OrderSvc -> DB: INSERT INTO orders
+DB --> OrderSvc: Return Order
+OrderSvc --> APIGW: Return Order
+APIGW --> User: Return Order
+
+MB -> PaySvc: Process Payment
+PaySvc -> DB: INSERT INTO payments
+DB --> PaySvc: Return Payment
+PaySvc -> MB: Publish Payment Processed Event
+@enduml

@@ -1,0 +1,57 @@
+@startuml DiagramaDeComponentes
+
+package "Métricas e Metas" {
+    class "Desempenho" {
+        + Tempo de Resposta: < 200ms
+        + Throughput: > 1000 req/s
+        + Taxa de Erros: < 0.1%
+    }
+    class "Disponibilidade" {
+        + Uptime: > 99.99%
+        + MTTR: < 5 minutos
+        + MTBF: > 1 mes
+    }
+    class "Confiabilidade" {
+        + Taxa de Sucesso: > 99.9%
+        + RPO: < 1 minuto
+        + RTO: < 10 minutos
+    }
+package "Componentes do Sistema" {
+ class "API Gateway" {
+   + Throughput: > 2000 req/s
+   + Latência: < 50ms
+   + Disponibilidade: > 99.99%
+  }
+  class "Authentication Service" {
+        + Throughput: > 500 req/s
+        + Latência: < 100ms
+    }
+    class "User Service" {
+        + Throughput: > 1000 req/s
+        + Latência: < 100ms
+    }
+    class "Product Service" {
+        + Throughput: > 1000 req/s
+        + Latência: < 100ms
+    }
+    class "Order Service" {
+        + Throughput: > 500 req/s
+        + Latência: < 150ms
+    }
+    class "Payment Service" {
+        + Throughput: > 300 req/s
+        + Latência: < 200ms
+    }
+    class "Message Broker" {
+        + Throughput: > 5000 msg/s
+        + Latência: < 10ms
+    }
+    class "Cache (Redis)" {
+        + Throughput: > 10000 req/s
+        + Latência: < 1ms
+    }
+    class "Database (SQL/NoSQL)" {
+        + Throughput: > 2000 req/s
+        + Latência: < 50ms
+    }
+}

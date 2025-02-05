@@ -1,0 +1,19 @@
+@startuml DiagramaDeSequenciaAutenticacao
+
+actor User
+participant "API Gateway" as APIGW
+participant "Authentication Service" as AuthSvc
+participant "User Service" as UserSvc
+participant "Database" as DB
+
+User -> APIGW: POST /login
+APIGW -> AuthSvc: Authenticate(credentials)
+AuthSvc -> UserSvc: Validate User(credentials)
+UserSvc -> DB: SELECT * FROM users WHERE username = ?
+DB --> UserSvc: Return User Data
+UserSvc --> AuthSvc: Return Validation Result
+AuthSvc -> AuthSvc: Generate Token
+AuthSvc --> APIGW: Return Token
+APIGW --> User: Return Token
+
+@enduml

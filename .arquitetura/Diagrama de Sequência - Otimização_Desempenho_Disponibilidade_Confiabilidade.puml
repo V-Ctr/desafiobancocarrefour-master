@@ -1,0 +1,28 @@
+@startuml DiagramaDeSequenciaOtimizacao
+
+actor User
+participant "API Gateway" as APIGW
+participant "Authentication Service" as AuthSvc
+participant "User Service" as UserSvc
+participant "Cache (Redis)" as Cache
+participant "Database (SQL/NoSQL)" as DB
+participant "Monitoring & Logging" as Monitoring
+
+User -> APIGW: POST /login
+APIGW -> AuthSvc: Authenticate(credentials)
+AuthSvc -> Cache: Check User Cache
+alt Cache Hit
+    Cache --> AuthSvc: Return Cached User Data
+else Cache Miss
+    AuthSvc -> UserSvc: Validate User(credentials)
+    UserSvc -> DB: SELECT * FROM users WHERE username = ?
+    DB --> UserSvc: Return User Data
+    UserSvc --> AuthSvc: Return Validation Result
+    AuthSvc -> Cache: Update User Cache
+end
+AuthSvc -> AuthSvc: Generate Token
+AuthSvc -> Monitoring: Log Authentication Event
+AuthSvc --> APIGW: Return Token
+APIGW --> User: Return Token
+
+@enduml

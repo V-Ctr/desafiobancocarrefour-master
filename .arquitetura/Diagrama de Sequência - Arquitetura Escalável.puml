@@ -1,0 +1,55 @@
+@startuml EscalabilidadeArquitetura
+
+package "Frontend" {
+    [User Interface] << (C, #ADD1B2) >>
+}
+
+package "API Gateway" {
+    [Authentication Service] << (S, #ADD1B2) >>
+}
+
+package "Services" {
+    [Authentication Service] << (S, #ADD1B2) >>
+    [User Service] << (S, #ADD1B2) >>
+    [Product Service] << (S, #ADD1B2) >>
+    [Order Service] << (S, #ADD1B2) >>
+    [Payment Service] << (S, #ADD1B2) >>
+}
+
+package "Infrastructure" {
+    [Load Balancer] << (I, #ADD1B2) >>
+    [Auto-Scaling Group] << (I, #ADD1B2) >>
+    [Message Broker] << (I, #ADD1B2) >>
+    [Cache (Redis)] << (I, #ADD1B2) >>
+    [Database (SQL/NoSQL)] << (I, #ADD1B2) >>
+}
+
+[User Interface] --> [API Gateway] : HTTP/HTTPS (JSON)
+[API Gateway] --> [Load Balancer] : HTTP/HTTPS (JSON)
+[Load Balancer] --> [Authentication Service] : HTTP/HTTPS (JSON)
+[Load Balancer] --> [User Service] : HTTP/HTTPS (JSON)
+[Load Balancer] --> [Product Service] : HTTP/HTTPS (JSON)
+[Load Balancer] --> [Order Service] : HTTP/HTTPS (JSON)
+[Load Balancer] --> [Payment Service] : HTTP/HTTPS (JSON)
+
+[Authentication Service] --> [User Service] : gRPC (Protobuf)
+[User Service] --> [Database (SQL/NoSQL)] : SQL/NoSQL
+[Product Service] --> [Database (SQL/NoSQL)] : SQL/NoSQL
+[Order Service] --> [Database (SQL/NoSQL)] : SQL/NoSQL
+[Payment Service] --> [Database (SQL/NoSQL)] : SQL/NoSQL
+
+[Product Service] --> [Message Broker] : AMQP (Protobuf)
+[Order Service] --> [Message Broker] : AMQP (Protobuf)
+[Payment Service] --> [Message Broker] : AMQP (Protobuf)
+
+[Product Service] --> [Cache (Redis)] : Redis Protocol
+[Order Service] --> [Cache (Redis)] : Redis Protocol
+[Payment Service] --> [Cache (Redis)] : Redis Protocol
+
+[Auto-Scaling Group] --> [Authentication Service]
+[Auto-Scaling Group] --> [User Service]
+[Auto-Scaling Group] --> [Product Service]
+[Auto-Scaling Group] --> [Order Service]
+[Auto-Scaling Group] --> [Payment Service]
+
+@enduml

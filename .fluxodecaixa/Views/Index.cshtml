@@ -1,0 +1,43 @@
+@model IEnumerable<Lancamento>
+
+<h1>Fluxo de Caixa</h1>
+
+<form asp-action="AdicionarLancamento" method="post">
+    <div>
+        <label>Data:</label>
+        <input type="date" name="data" required />
+    </div>
+    <div>
+        <label>Valor:</label>
+        <input type="number" name="valor" required />
+    </div>
+    <div>
+        <label>Tipo:</label>
+        <select name="tipo" required>
+            <option value="Credito">Crédito</option>
+            <option value="Debito">Débito</option>
+        </select>
+    </div>
+    <button type="submit">Adicionar</button>
+</form>
+
+<h2>Lançamentos</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Valor</th>
+            <th>Tipo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lancamento in Model)
+        {
+            <tr>
+                <td>@lancamento.Data</td>
+                <td>@lancamento.Valor</td>
+                <td>@lancamento.Tipo</td>
+            </tr>
+        }
+    </tbody>
+</table>
