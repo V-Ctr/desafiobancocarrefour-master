@@ -1,6 +1,6 @@
-name: .NET
+#name: .NET
 
-on: [push, pull_request]
+n: [push, pull_request]
 
 jobs:
   build:
