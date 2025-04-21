@@ -10,8 +10,8 @@ metadata:
     sonarcloud.io/project-key: zanthus-ecosistema
 spec:
   type: website
-  owner: vladimir.ribeiro@zanthus.com.br
-  lifecycle: Homologação do ecosistema Zanthus
+  owner: group:default/zanthus-team
+  lifecycle: production
   system: zanthus-ecosistema
   links:
     - title: Jenkins Pipeline
@@ -20,26 +20,23 @@ spec:
       url: https://your-sonarqube-url/dashboard?id=zanthus-ecosistema
     - title: Kubernetes Dashboard
       url: https://your-kubernetes-dashboard-url
+    - title: DORA Metrics Dashboard
+      url: https://your-dora-metrics-url
 
 ---
 
 apiVersion: backstage.io/v1alpha1
-kind: Location
+kind: Group
 metadata:
-  name: group-guests
+  name: zanthus-team
+  description: Zanthus development team
 spec:
-  type: url
-  target: ./group-guests.yaml
-
----
-
-apiVersion: backstage.io/v1alpha1
-kind: Location
-metadata:
-  name: jenkins-template
-spec:
-  type: url
-  target: ./templates/jenkins-template.yaml
+  type: team
+  profile:
+    displayName: Zanthus Team
+    email: zanthus-team@example.com
+  members:
+    - vladimir.ribeiro@zanthus.com.br
 
 ---
 
@@ -52,9 +49,9 @@ metadata:
     jenkins.io/job: zanthus-ecosistema-pipeline
 spec:
   type: ci-pipeline
-  owner: vladimir.ribeiro@zanthus.com.br
+  owner: group:default/zanthus-team
   dependsOn:
-    - resource: zanthus-ecosistema
+    - component: zanthus-ecosistema
   links:
     - title: Jenkins Pipeline
       url: https://your-jenkins-url/job/zanthus-ecosistema-pipeline
@@ -70,9 +67,9 @@ metadata:
     kubernetes.io/cluster: example-cluster
 spec:
   type: kubernetes-cluster
-  owner: vladimir.ribeiro@zanthus.com.br
+  owner: group:default/zanthus-team
   dependsOn:
-    - resource: zanthus-ecosistema
+    - component: zanthus-ecosistema
   links:
     - title: Kubernetes Dashboard
       url: https://your-kubernetes-dashboard-url
@@ -88,13 +85,25 @@ metadata:
     sonarcloud.io/project-key: zanthus-ecosistema
 spec:
   type: code-quality
-  owner: vladimir.ribeiro@zanthus.com.br
+  owner: group:default/zanthus-team
   dependsOn:
-    - resource: zanthus-ecosistema
+    - component: zanthus-ecosistema
   links:
     - title: SonarQube Dashboard
       url: https://your-sonarqube-url/dashboard?id=zanthus-ecosistema
 
 ---
 
-
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: zanthus-ecosistema-dora
+  description: DORA metrics for Zanthus Ecosistema
+spec:
+  type: analytics
+  owner: group:default/zanthus-team
+  dependsOn:
+    - component: zanthus-ecosistema
+  links:
+    - title: DORA Metrics Dashboard
+      url: https://your-dora-metrics-url
