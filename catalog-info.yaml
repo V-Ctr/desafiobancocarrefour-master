@@ -6,5 +6,5 @@ metadata:
   owner: V-Ctr
 spec:
   type: service
-  lifecycle: production
+  lifecycle: development
   owner: V-Ctr
