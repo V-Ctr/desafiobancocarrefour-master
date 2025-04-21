@@ -97,16 +97,4 @@ spec:
 
 ---
 
-apiVersion: backstage.io/v1alpha1
-kind: Resource
-metadata:
-  name: zanthus-ecosistema-dora
-  description: DORA metrics for Zanthus Ecosistema
-spec:
-  type: analytics
-  owner: vladimir.ribeiro@zanthus.com.br
-  dependsOn:
-    - resource: zanthus-ecosistema
-  links:
-    - title: DORA Metrics Dashboard
-      url: https://your-dora-metrics-url
+
