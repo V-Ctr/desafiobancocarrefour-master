@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: desafiobancocarrefour-master
+  description: Projeto de integração com o Backstage
+  owner: V-Ctr
+spec:
+  type: service
+  lifecycle: development
+  owner: V-Ctr
